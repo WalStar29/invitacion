@@ -15,12 +15,14 @@
 
         html, body {
             width: 100%;
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            height: 100dvh; /* Adaptable a la barra del navegador móvil */
+            overflow: hidden; /* Evita cualquier scroll */
         }
 
         body {
-            background: radial-gradient(circle at center, #1b2a47 0%, #0a1118 100%);
+            /* Fondo Rosa Claro, Llamativo y Luminoso */
+            background: radial-gradient(circle at center, #fff0f5 0%, #ffb6c1 50%, #ff9ebb 100%);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -28,13 +30,14 @@
             position: relative;
         }
 
-        /* --- FONDO DE ESTRELLAS ANIMADAS --- */
+        /* --- FONDO DE ESTRELLAS Y DESTELLOS ANIMADOS --- */
         .stars-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             pointer-events: none;
             z-index: 1;
         }
@@ -43,60 +46,71 @@
             position: absolute;
             background: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 182, 193, 0.6);
             animation: twinkleAndFloat linear infinite;
         }
 
         @keyframes twinkleAndFloat {
             0% {
                 transform: translateY(0) scale(0.5);
-                opacity: 0.1;
+                opacity: 0.2;
             }
             50% {
                 opacity: 1;
-                transform: translateY(-25px) scale(1.2);
+                transform: translateY(-25px) scale(1.3);
             }
             100% {
                 transform: translateY(-50px) scale(0.5);
-                opacity: 0.1;
+                opacity: 0.2;
             }
         }
 
-        /* --- CONTENEDOR PRINCIPAL MOBILE --- */
+        /* --- CONTENEDOR PRINCIPAL --- */
         .main-wrapper {
             width: 100%;
-            max-width: 380px;
-            min-height: 100vh;
+            height: 100vh;
+            height: 100dvh;
+            max-width: 420px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px 10px;
+            padding: 10px;
             position: relative;
             z-index: 10;
+            perspective: 1200px;
         }
 
-        /* --- SOBRE BLANCO Y ELEGANTE 3D --- */
-        .envelope-container {
+        /* --- ESCENA DEL SOBRE CON CARTA INTERNA --- */
+        .scene-container {
             position: relative;
-            width: 280px;
-            height: 190px;
-            background: #fdfbf7;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            cursor: pointer;
-            perspective: 1000px;
-            transition: transform 0.4s ease, opacity 0.5s ease;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        /* --- SOBRE ELEGANTE EN TONOS MARFIL Y DORADO 3D --- */
+        .envelope-container {
+            position: absolute;
+            width: 280px;
+            height: 185px;
+            background: #fffdfa;
+            border-radius: 14px;
+            box-shadow: 0 15px 35px rgba(212, 140, 160, 0.35), inset 0 0 15px rgba(212, 175, 55, 0.1);
+            border: 1.5px solid rgba(212, 175, 55, 0.5);
+            cursor: pointer;
+            perspective: 1000px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
         }
 
         .envelope-container:hover {
             transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(212, 140, 160, 0.45);
         }
 
-        /* Solapa Superior (Flap) */
+        /* Solapa Superior del Sobre (Flap) */
         .envelope-container .flap {
             position: absolute;
             top: 0;
@@ -105,60 +119,60 @@
             height: 0;
             border-left: 140px solid transparent;
             border-right: 140px solid transparent;
-            border-top: 105px solid #ffffff;
+            border-top: 105px solid #fffaf0;
             transform-origin: top;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 5;
-            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.3s;
+            z-index: 7;
+            filter: drop-shadow(0 4px 6px rgba(180, 140, 50, 0.15));
         }
 
-        /* Bolsillo del Sobre */
+        /* Bolsillo Inferior del Sobre */
         .envelope-container .pocket {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 0;
-            border-left: 140px solid #f9f7f2;
-            border-right: 140px solid #f4f1ea;
-            border-bottom: 100px solid #fcfbfa;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-            z-index: 4;
+            border-left: 140px solid #fcf8f2;
+            border-right: 140px solid #f8f3ea;
+            border-bottom: 100px solid #fffdfa;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+            z-index: 6;
         }
 
         /* Sello Dorado Elegante */
         .seal-button {
             position: absolute;
-            top: 75px;
+            top: 70px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #d4af37 0%, #fef1c9 50%, #b38728 100%);
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, #f3e0aa 0%, #d4af37 50%, #aa7c11 100%);
             border: 2px solid #ffffff;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 6;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+            z-index: 8;
+            box-shadow: 0 6px 18px rgba(170, 124, 17, 0.4);
+            transition: all 0.4s ease;
             animation: pulseGlow 2s infinite;
         }
 
         @keyframes pulseGlow {
-            0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-            50% { transform: translateX(-50%) scale(1.06); box-shadow: 0 0 20px rgba(212, 175, 55, 0.9); }
-            100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+            0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 12px rgba(212, 175, 55, 0.6); }
+            50% { transform: translateX(-50%) scale(1.08); box-shadow: 0 0 22px rgba(212, 175, 55, 0.95); }
+            100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 12px rgba(212, 175, 55, 0.6); }
         }
 
         .seal-button i {
             font-size: 16px;
             color: #ffffff;
             margin-bottom: 2px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .seal-button span {
@@ -167,43 +181,51 @@
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
-        /* Estado Abierto del Sobre */
+        /* ESTADO: SOBRE ABIERTO Y EMERGIENDO LA CARTA */
         .envelope-container.open .flap {
             transform: rotateX(180deg);
-            z-index: 1;
+            z-index: 2;
         }
 
-        .envelope-container.hide-envelope {
+        /* El sobre se achica y desaparece */
+        .envelope-container.shrink-hide {
+            transform: scale(0.1) translateY(200px);
             opacity: 0;
-            transform: scale(0.8) translateY(50px);
             pointer-events: none;
-            display: none;
         }
 
-        /* --- TARJETA DESPLEGADA --- */
+        /* --- TARJETA DENTRO DEL SOBRE Y DESPLEGABLE --- */
         .invitation-card {
-            width: 100%;
-            max-width: 320px;
-            background: rgba(255, 255, 255, 0.96);
-            padding: 12px;
+            position: absolute;
+            width: 260px;
+            max-height: 94dvh;
+            background: rgba(255, 255, 255, 0.97);
+            padding: 10px;
             border-radius: 16px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-            display: none;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(212, 175, 55, 0.3);
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 6px;
+            z-index: 3;
+            transform: translateY(15px) scale(0.85);
             opacity: 0;
-            transform: translateY(40px) scale(0.9);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .invitation-card.show-card {
-            display: flex;
+        /* Estado: La carta emerge del sobre y se agranda sin salirse de la pantalla */
+        .invitation-card.card-emerge {
             opacity: 1;
+            z-index: 20;
+            pointer-events: auto;
+            position: relative;
+            width: 100%;
+            max-width: 330px;
             transform: translateY(0) scale(1);
         }
 
@@ -211,30 +233,31 @@
         .invitation-img {
             width: 100%;
             height: auto;
-            max-height: 52vh;
+            max-height: 52dvh;
             object-fit: contain;
-            border-radius: 10px;
+            border-radius: 8px;
             display: block;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         /* --- SECCIÓN DE CONTEO REGRESIVO COMPACTO --- */
         .countdown-container {
             width: 100%;
-            background: linear-gradient(135deg, #f8f9fa 0%, #edf2f7 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
             border: 1px solid rgba(212, 175, 55, 0.4);
             border-radius: 10px;
-            padding: 6px 4px;
+            padding: 5px 4px;
             text-align: center;
+            box-shadow: 0 2px 6px rgba(212, 175, 55, 0.1);
         }
 
         .countdown-title {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 700;
-            color: #555;
+            color: #724e5b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .timer {
@@ -247,24 +270,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 45px;
+            min-width: 42px;
         }
 
         .timer-number {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            color: #3b5998;
+            color: #d47a96;
             background: #ffffff;
             width: 100%;
             padding: 2px 0;
             border-radius: 6px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ffe3ec;
         }
 
         .timer-label {
-            font-size: 0.55rem;
-            color: #718096;
+            font-size: 0.5rem;
+            color: #8c6b77;
             margin-top: 2px;
             font-weight: 600;
             text-transform: uppercase;
@@ -275,18 +298,18 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             width: 100%;
-            padding: 9px 15px;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             text-decoration: none;
             border: none;
@@ -300,13 +323,27 @@
         }
 
         .btn-whatsapp {
-            background-color: #25D366;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: #ffffff;
         }
 
         .btn-close {
-            background-color: #4a5568;
+            background: linear-gradient(135deg, #a88b97 0%, #7d626e 100%);
             color: #ffffff;
+        }
+
+        /* Adjustes para pantallas pequeñas (iPhone SE, etc.) */
+        @media (max-height: 667px) {
+            .invitation-img {
+                max-height: 44dvh;
+            }
+            .countdown-container {
+                padding: 3px 4px;
+            }
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
         }
 
         /* Confeti Canvas */
@@ -316,6 +353,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             pointer-events: none;
             z-index: 100;
         }
@@ -330,57 +368,61 @@
 
     <div class="main-wrapper">
 
-        <!-- SOBRE BLANCO INTERACTIVO -->
-        <div class="envelope-container" id="envelope" onclick="openEnvelope()">
-            <div class="flap"></div>
-            <div class="pocket"></div>
-            <div class="seal-button">
-                <i class="fa-solid fa-envelope-open-text"></i>
-                <span>Toca abrir</span>
-            </div>
-        </div>
+        <div class="scene-container" id="scene-container">
 
-        <!-- TARJETA COMPLETA CON TU IMAGEN Y CONTEO REGRESIVO -->
-        <div class="invitation-card" id="card">
-            
-            <!-- Imagen de la invitación -->
-            <img src="carta.png" alt="Invitación Revelación de Género" class="invitation-img">
-
-            <!-- Conteo Regresivo -->
-            <div class="countdown-container">
-                <div class="countdown-title">Faltan para el gran día</div>
-                <div class="timer">
-                    <div class="timer-box">
-                        <span class="timer-number" id="days">00</span>
-                        <span class="timer-label">Días</span>
-                    </div>
-                    <div class="timer-box">
-                        <span class="timer-number" id="hours">00</span>
-                        <span class="timer-label">Horas</span>
-                    </div>
-                    <div class="timer-box">
-                        <span class="timer-number" id="minutes">00</span>
-                        <span class="timer-label">Min</span>
-                    </div>
-                    <div class="timer-box">
-                        <span class="timer-number" id="seconds">00</span>
-                        <span class="timer-label">Seg</span>
-                    </div>
+            <!-- SOBRE BLANCO Y DORADO INTERACTIVO -->
+            <div class="envelope-container" id="envelope" onclick="openEnvelope()">
+                <div class="flap"></div>
+                <div class="pocket"></div>
+                <div class="seal-button">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span>Toca abrir</span>
                 </div>
             </div>
 
-            <div class="action-buttons">
-                <!-- WhatsApp -->
-                <a href="https://wa.me/?text=%C2%A1Hola!%20Confirmo%20mi%20asistencia%20a%20la%20Revelaci%C3%B3n%20de%20G%C3%A9nero." 
-                   target="_blank" 
-                   class="btn btn-whatsapp">
-                    <i class="fa-brands fa-whatsapp"></i> Confirmar Asistencia
-                </a>
+            <!-- TARJETA DESPLEGABLE DENTRO DEL SOBRE -->
+            <div class="invitation-card" id="card">
+                
+                <!-- Imagen de la invitación -->
+                <img src="carta.png" alt="Invitación Revelación de Género" class="invitation-img">
 
-                <!-- Botón para cerrar y regresar al sobre -->
-                <button class="btn btn-close" onclick="closeEnvelope()">
-                    <i class="fa-solid fa-envelope"></i> Guardar en el sobre
-                </button>
+                <!-- Conteo Regresivo -->
+                <div class="countdown-container">
+                    <div class="countdown-title">Faltan para el gran día</div>
+                    <div class="timer">
+                        <div class="timer-box">
+                            <span class="timer-number" id="days">00</span>
+                            <span class="timer-label">Días</span>
+                        </div>
+                        <div class="timer-box">
+                            <span class="timer-number" id="hours">00</span>
+                            <span class="timer-label">Horas</span>
+                        </div>
+                        <div class="timer-box">
+                            <span class="timer-number" id="minutes">00</span>
+                            <span class="timer-label">Min</span>
+                        </div>
+                        <div class="timer-box">
+                            <span class="timer-number" id="seconds">00</span>
+                            <span class="timer-label">Seg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/584125952906?text=%C2%A1Hola!%20Confirmo%20mi%20asistencia%20a%20la%20Revelaci%C3%B3n%20de%20G%C3%A9nero." 
+                    target="_blank" 
+                    class="btn btn-whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i> Confirmar Asistencia
+                    </a>
+
+                    <!-- Botón para cerrar y regresar al sobre -->
+                    <button class="btn btn-close" onclick="closeEnvelope()">
+                        <i class="fa-solid fa-envelope"></i> Guardar en el sobre
+                    </button>
+                </div>
+
             </div>
 
         </div>
@@ -391,13 +433,13 @@
         // 1. Generador de Estrellas Animadas en Fondo
         function initStars() {
             const container = document.getElementById('stars-container');
-            const count = 40;
+            const count = 45;
 
             for (let i = 0; i < count; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
 
-                const size = Math.random() * 2.5 + 1;
+                const size = Math.random() * 2.5 + 1.5;
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
 
@@ -445,7 +487,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 3. Abrir sobre y mostrar invitación
+        // 3. Abrir sobre
         function openEnvelope() {
             const envelope = document.getElementById('envelope');
             const card = document.getElementById('card');
@@ -453,49 +495,66 @@
             envelope.classList.add('open');
 
             setTimeout(() => {
-                envelope.classList.add('hide-envelope');
-                card.classList.add('show-card');
-                launchConfetti();
-            }, 450);
+                card.classList.add('card-emerge');
+                envelope.classList.add('shrink-hide');
+                launchSideConfetti();
+            }, 400);
         }
 
-        // 4. Cerrar tarjeta y regresar al sobre
+        // 4. Cerrar tarjeta
         function closeEnvelope() {
             const envelope = document.getElementById('envelope');
             const card = document.getElementById('card');
 
-            card.classList.remove('show-card');
+            card.classList.remove('card-emerge');
+            envelope.classList.remove('shrink-hide');
 
             setTimeout(() => {
-                envelope.classList.remove('hide-envelope');
-                setTimeout(() => {
-                    envelope.classList.remove('open');
-                }, 100);
-            }, 300);
+                envelope.classList.remove('open');
+            }, 600);
         }
 
-        // 5. Efecto de Confeti (Rosas y Azules)
-        function launchConfetti() {
+        // 5. Explosión de Confeti Dual desde los Lados (Rosa y Azul)
+        function launchSideConfetti() {
             const canvas = document.getElementById('canvas-confetti');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
             const particles = [];
-            const colors = ['#7db0c9', '#f4978e', '#d4af37', '#ffffff'];
+            const pinkColors = ['#ff85a1', '#f72585', '#ffb3c6', '#ffd1dc'];
+            const blueColors = ['#4ea8de', '#0077b6', '#90e0ef', '#caf0f8'];
+            const goldColors = ['#d4af37', '#fef1c9'];
 
-            for (let i = 0; i < 45; i++) {
+            // Lado izquierdo (Rosa)
+            for (let i = 0; i < 40; i++) {
                 particles.push({
-                    x: canvas.width / 2,
-                    y: canvas.height / 2,
-                    rx: Math.random() * 5 + 3,
-                    ry: Math.random() * 8 + 3,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    vx: (Math.random() - 0.5) * 8,
+                    x: 0,
+                    y: canvas.height * 0.4 + (Math.random() * 0.3 * canvas.height),
+                    rx: Math.random() * 6 + 4,
+                    ry: Math.random() * 10 + 4,
+                    color: Math.random() > 0.3 ? pinkColors[Math.floor(Math.random() * pinkColors.length)] : goldColors[Math.floor(Math.random() * goldColors.length)],
+                    vx: Math.random() * 12 + 6,
                     vy: (Math.random() - 0.7) * 10,
-                    gravity: 0.22,
+                    gravity: 0.25,
                     rotation: Math.random() * 360,
-                    vRot: (Math.random() - 0.5) * 8
+                    vRot: (Math.random() - 0.5) * 10
+                });
+            }
+
+            // Lado derecho (Azul)
+            for (let i = 0; i < 40; i++) {
+                particles.push({
+                    x: canvas.width,
+                    y: canvas.height * 0.4 + (Math.random() * 0.3 * canvas.height),
+                    rx: Math.random() * 6 + 4,
+                    ry: Math.random() * 10 + 4,
+                    color: Math.random() > 0.3 ? blueColors[Math.floor(Math.random() * blueColors.length)] : goldColors[Math.floor(Math.random() * goldColors.length)],
+                    vx: -(Math.random() * 12 + 6),
+                    vy: (Math.random() - 0.7) * 10,
+                    gravity: 0.25,
+                    rotation: Math.random() * 360,
+                    vRot: (Math.random() - 0.5) * 10
                 });
             }
 
@@ -509,7 +568,7 @@
                     p.vy += p.gravity;
                     p.rotation += p.vRot;
 
-                    if (p.y < canvas.height) alive = true;
+                    if (p.y < canvas.height && p.x > -20 && p.x < canvas.width + 20) alive = true;
 
                     ctx.save();
                     ctx.translate(p.x, p.y);
