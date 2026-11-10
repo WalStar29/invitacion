@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Invitación Digital - Revelación de Género</title>
+    <!-- Font Awesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1b2a47 0%, #0a1118 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- FONDO DE ESTRELLAS ANIMADAS --- */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+            animation: twinkleAndFloat linear infinite;
+        }
+
+        @keyframes twinkleAndFloat {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 0.1;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-25px) scale(1.2);
+            }
+            100% {
+                transform: translateY(-50px) scale(0.5);
+                opacity: 0.1;
+            }
+        }
+
+        /* --- CONTENEDOR PRINCIPAL MOBILE --- */
+        .main-wrapper {
+            width: 100%;
+            max-width: 380px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 10px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- SOBRE BLANCO Y ELEGANTE 3D --- */
+        .envelope-container {
+            position: relative;
+            width: 280px;
+            height: 190px;
+            background: #fdfbf7;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            cursor: pointer;
+            perspective: 1000px;
+            transition: transform 0.4s ease, opacity 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Solapa Superior (Flap) */
+        .envelope-container .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 105px solid #ffffff;
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+        }
+
+        /* Bolsillo del Sobre */
+        .envelope-container .pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid #f9f7f2;
+            border-right: 140px solid #f4f1ea;
+            border-bottom: 100px solid #fcfbfa;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 4;
+        }
+
+        /* Sello Dorado Elegante */
+        .seal-button {
+            position: absolute;
+            top: 75px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #d4af37 0%, #fef1c9 50%, #b38728 100%);
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 6;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+            50% { transform: translateX(-50%) scale(1.06); box-shadow: 0 0 20px rgba(212, 175, 55, 0.9); }
+            100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        }
+
+        .seal-button i {
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 2px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .seal-button span {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Estado Abierto del Sobre */
+        .envelope-container.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-container.hide-envelope {
+            opacity: 0;
+            transform: scale(0.8) translateY(50px);
+            pointer-events: none;
+            display: none;
+        }
+
+        /* --- TARJETA DESPLEGADA --- */
+        .invitation-card {
+            width: 100%;
+            max-width: 320px;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 12px;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .invitation-card.show-card {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Imagen de la Plantilla */
+        .invitation-img {
+            width: 100%;
+            height: auto;
+            max-height: 52vh;
+            object-fit: contain;
+            border-radius: 10px;
+            display: block;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- SECCIÓN DE CONTEO REGRESIVO COMPACTO --- */
+        .countdown-container {
+            width: 100%;
+            background: linear-gradient(135deg, #f8f9fa 0%, #edf2f7 100%);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 10px;
+            padding: 6px 4px;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .timer-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 45px;
+        }
+
+        .timer-number {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #3b5998;
+            background: #ffffff;
+            width: 100%;
+            padding: 2px 0;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        .timer-label {
+            font-size: 0.55rem;
+            color: #718096;
+            margin-top: 2px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Botones de Acción Compactos */
+        .action-buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 9px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: #ffffff;
+        }
+
+        .btn-close {
+            background-color: #4a5568;
+            color: #ffffff;
+        }
+
+        /* Confeti Canvas */
+        #canvas-confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo Interactivo de Estrellas -->
+    <div class="stars-container" id="stars-container"></div>
+
+    <canvas id="canvas-confetti"></canvas>
+
+    <div class="main-wrapper">
+
+        <!-- SOBRE BLANCO INTERACTIVO -->
+        <div class="envelope-container" id="envelope" onclick="openEnvelope()">
+            <div class="flap"></div>
+            <div class="pocket"></div>
+            <div class="seal-button">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <span>Toca abrir</span>
+            </div>
+        </div>
+
+        <!-- TARJETA COMPLETA CON TU IMAGEN Y CONTEO REGRESIVO -->
+        <div class="invitation-card" id="card">
+            
+            <!-- Imagen de la invitación -->
+            <img src="carta.png" alt="Invitación Revelación de Género" class="invitation-img">
+
+            <!-- Conteo Regresivo -->
+            <div class="countdown-container">
+                <div class="countdown-title">Faltan para el gran día</div>
+                <div class="timer">
+                    <div class="timer-box">
+                        <span class="timer-number" id="days">00</span>
+                        <span class="timer-label">Días</span>
+                    </div>
+                    <div class="timer-box">
+                        <span class="timer-number" id="hours">00</span>
+                        <span class="timer-label">Horas</span>
+                    </div>
+                    <div class="timer-box">
+                        <span class="timer-number" id="minutes">00</span>
+                        <span class="timer-label">Min</span>
+                    </div>
+                    <div class="timer-box">
+                        <span class="timer-number" id="seconds">00</span>
+                        <span class="timer-label">Seg</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <!-- WhatsApp -->
+                <a href="https://wa.me/?text=%C2%A1Hola!%20Confirmo%20mi%20asistencia%20a%20la%20Revelaci%C3%B3n%20de%20G%C3%A9nero." 
+                   target="_blank" 
+                   class="btn btn-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Confirmar Asistencia
+                </a>
+
+                <!-- Botón para cerrar y regresar al sobre -->
+                <button class="btn btn-close" onclick="closeEnvelope()">
+                    <i class="fa-solid fa-envelope"></i> Guardar en el sobre
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // 1. Generador de Estrellas Animadas en Fondo
+        function initStars() {
+            const container = document.getElementById('stars-container');
+            const count = 40;
+
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+
+                const size = Math.random() * 2.5 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+
+                container.appendChild(star);
+            }
+        }
+        initStars();
+
+        // 2. Conteo Regresivo en Tiempo Real hacia el 5 de Diciembre 06:30 PM
+        function updateCountdown() {
+            const now = new Date();
+            let targetYear = now.getFullYear();
+            
+            let eventDate = new Date(targetYear, 11, 5, 18, 30, 0);
+
+            if (now > eventDate) {
+                eventDate = new Date(targetYear + 1, 11, 5, 18, 30, 0);
+            }
+
+            const difference = eventDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((difference / 1000 / 60) % 60);
+                const seconds = Math.floor((difference / 1000) % 60);
+
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            } else {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 3. Abrir sobre y mostrar invitación
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const card = document.getElementById('card');
+
+            envelope.classList.add('open');
+
+            setTimeout(() => {
+                envelope.classList.add('hide-envelope');
+                card.classList.add('show-card');
+                launchConfetti();
+            }, 450);
+        }
+
+        // 4. Cerrar tarjeta y regresar al sobre
+        function closeEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const card = document.getElementById('card');
+
+            card.classList.remove('show-card');
+
+            setTimeout(() => {
+                envelope.classList.remove('hide-envelope');
+                setTimeout(() => {
+                    envelope.classList.remove('open');
+                }, 100);
+            }, 300);
+        }
+
+        // 5. Efecto de Confeti (Rosas y Azules)
+        function launchConfetti() {
+            const canvas = document.getElementById('canvas-confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#7db0c9', '#f4978e', '#d4af37', '#ffffff'];
+
+            for (let i = 0; i < 45; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    rx: Math.random() * 5 + 3,
+                    ry: Math.random() * 8 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.7) * 10,
+                    gravity: 0.22,
+                    rotation: Math.random() * 360,
+                    vRot: (Math.random() - 0.5) * 8
+                });
+            }
+
+            function update() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    p.rotation += p.vRot;
+
+                    if (p.y < canvas.height) alive = true;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.rx / 2, -p.ry / 2, p.rx, p.ry);
+                    ctx.restore();
+                });
+
+                if (alive) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            update();
+        }
+    </script>
+</body>
+</html>
